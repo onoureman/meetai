@@ -1,12 +1,15 @@
 "use client";
 import { Button } from "@/components/ui/button"
 import { useState } from "react";
+import { Input } from "@/components/ui/input";  
+import { authClient } from "@/lib/auth-client";
 
-import { authClient } from "@/lib/auth-client"; //import the auth client
 
 export default function Home() {
 
-   const { data: session } = authClient.useSession()
+   const { 
+    data: session,
+  } = authClient.useSession()
 
   const[name,setName]= useState("");
   const[email,setEmail]= useState("");
