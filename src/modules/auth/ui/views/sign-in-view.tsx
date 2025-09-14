@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import{FaGithub,FaGoogle} from "react-icons/fa";
 
 
 
@@ -65,6 +66,24 @@ const [error, setError] = useState<string | null>(null);
 
   };
 
+
+  const onSocial = async (provider: "github" | "google") => {
+    setError(null);
+   
+     authClient.signIn.social({
+      provider: provider
+    },
+    {
+      onSuccess: () => {
+        router.push("/");
+      },
+      onError: ({error}) => {
+        setError( error.message);
+      }
+    }
+  );
+  };
+    
   return (
     <div className="flex flex-col gap-6">
       <Card className="overflow-hidden p-0">
@@ -128,6 +147,24 @@ const [error, setError] = useState<string | null>(null);
                   Sign Up
                 </Link>
               </div>
+
+                <div className="after:border-border relative text-center text-sm  after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-t-border">
+                <span className="bg-card text-muted-foreground relative z-10 px-2">
+                  or continue with
+                </span>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+
+                <Button  onClick={() => onSocial("github")} 
+               variant="outline"  type="button" className="w-full"> <FaGithub />
+                </Button>
+
+                <Button onClick={() => onSocial("google")} 
+               variant="outline"  type="button" className="w-full"> <FaGoogle />
+                </Button>
+
+              </div>  
+
             </form>
           </Form>
           <div className="bg-radial from-blue-400 to-blue-500 relative hidden md:flex flex-col gap-y-4 items-center justify-center p-8 text-white">

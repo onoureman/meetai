@@ -1,11 +1,12 @@
 "use client";
 
-import { email, z } from "zod";
+import { email, set, z } from "zod";
 import { OctagonAlertIcon } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import{FaGithub,FaGoogle} from "react-icons/fa";
 
 
 
@@ -70,6 +71,25 @@ const [error, setError] = useState<string | null>(null);
   );
 
   };
+
+  
+  const onSocial = async (provider: "github" | "google") => {
+    setError(null);
+   
+     authClient.signIn.social({
+      provider: provider
+    },
+    {
+      onSuccess: () => {
+        router.push("/");
+      },
+      onError: ({error}) => {
+        setError( error.message);
+      }
+    }
+  );
+  };
+
 
   return (
     <div className="flex flex-col gap-6">
@@ -145,6 +165,29 @@ const [error, setError] = useState<string | null>(null);
                   Sign In
                 </Button>
               </div>
+               <div className="text-center text-sm">
+                already have an account?{" "}
+                <Link href="/sign-in" className="underline underline-offset-4">
+                  Sign In
+                </Link>
+              </div>
+              <div className="after:border-border relative text-center text-sm  after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-t-border">
+                <span className="bg-card text-muted-foreground relative z-10 px-2">
+                  or continue with
+                </span>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+
+                <Button onClick={() => onSocial("github")} 
+               variant="outline"  type="button" className="w-full"> <FaGithub />
+                </Button>
+
+                <Button onClick={() => onSocial("google")} 
+               variant="outline"  type="button" className="w-full"> <FaGoogle />
+                </Button>
+
+              </div>  
+
              
             </form>
           </Form>
